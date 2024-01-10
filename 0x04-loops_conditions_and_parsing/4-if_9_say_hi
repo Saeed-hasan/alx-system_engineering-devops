@@ -2,7 +2,8 @@
 #This script displays "Best School", at 9 print "Hi"
 for ((i = 0; i < 9; i++))
 do
-	if [ $i == 8 ]
+	echo "Best School"
+	if [ $i == 8 ];
 	then
 		echo "Hi"
 	fi
