@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 #This script displays "Best School", at 9 print "Hi"
-i=0
-while ((i < 10)); do
-	echo "Best School"
-	if ((i == 8)); then
+for ((i = 0; i < 9; i++))
+do
+	if [ $i == 8 ]
+	then
 		echo "Hi"
 	fi
-	((i+=1))
 done
