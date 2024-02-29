@@ -1,15 +1,12 @@
 #!/usr/bin/env bash
-# custom 404 error page
+# Configure a new Nginx server so that /redirect_me is redirecting to another page.
 
-redirct="\n\tlocation /redirect_me {\n\t\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4; \n\t}\n"
-file="/etc/nginx/sites-available/default"
-error="\n\terror_page 404 /404error.html;\n\tlocation = /404error.html {\n\t\troot /usr/share/nginx/html;\n\t\tinternal;\n\t}\n"
-
-apt-get -y update
-apt-get -y install nginx
-echo "Hello World!" > /var/www/html/index.nginx-debian.html
-sed -i "37i\ $redirct" "$file"
-
-echo "Ceci n'est pas une page" > "/usr/share/nginx/html/404error.html"
-sed -i "37i\ $error" "$file"
-service nginx restart
+sudo apt-get -y update
+sudo apt-get -y upgrade
+sudo apt-get -y install nginx
+sudo service nginx start
+echo "Ceci n'est pas une page" | sudo tee /var/www/html/404.html
+new_string="\\\terror_page 404 /404.html;\n\tlocation = /404.html {\n\t\troot /var/www/html;\n\t\tinternal;\n\t}"
+sudo sed -i "20i $new_string" /etc/nginx/sites-available/default
+sudo service nginx restart
+sudo service nginx reload
