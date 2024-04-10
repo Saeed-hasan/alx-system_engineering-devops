@@ -1,22 +1,22 @@
 #!/usr/bin/python3
+# returns the number of subscribers for a given subreddit.
+""" reddit API """
+
+
 import requests
 
 
 def top_ten(subreddit):
-    '''Finds and prints the titles of the first 10 host posts'''
-
-    header = {'User-Agent':  'Chrome/66.0.3359.139 Mobile Safari/537.36'}
-    url = "https://api.reddit.com/r/{}/hot/".format(subreddit)
-    response = requests.get(url, headers=header)
-
-    if response.status_code == 200:
-        hot_list = response.json()["data"]["children"]
-
-        counter = 0
-        for hot in hot_list:
-            if counter == 10:
-                break
-            print(hot["data"]["title"])
-            counter += 1
+    '''number of subscribers'''
+    url = "https://www.reddit.com/r/" + subreddit + '/hot.json'
+    headers = {'User-Agent': 'Python:Python_bot:v1.0 (by /u/paurbano)'}
+    client = requests.session()
+    client.headers = headers
+    parameters = {'limit': 10}
+    r = client.get(url, params=parameters)
+    # print (r.json())
+    if r.status_code == 200:
+        for hot in r.json().get('data').get('children'):
+            print(hot.get('data').get('title'))
     else:
-        print("None")
+        print('None')
