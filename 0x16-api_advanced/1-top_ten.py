@@ -1,28 +1,27 @@
 #!/usr/bin/python3
 """
-
-@author: Saeed mohammed
+1-top_ten
 """
-from json import loads
-from requests import get
+import requests
 
 
 def top_ten(subreddit):
-    """queries the Reddit API and prints the titles of the first 10 hot posts
-    listed for a given subreddit.
     """
-    url = 'https://www.reddit.com/r/{}/hot.json'.format(subreddit)
-    headers = {
-        'User-Agent':
-        'Mozilla/5.0 (Windows; U; Windows NT 5.1; de; rv:1.9.2.3) \
-        Gecko/20100401 Firefox/3.6.3 (FM Scene 4.6.1)'
-    }
-    response = get(url, headers=headers, allow_redirects=False)
-    reddits = response.json()
+    Prints the titles of the first 10 hot posts listed for a given subreddit.
+    """
+    url = f'https://www.reddit.com/r/{subreddit}/hot.json?limit=10'
+    headers = {"User-Agent": "Python/requests"}
+    response = requests.get(url, headers=headers, allow_redirects=False)
 
-    try:
-        children = reddits.get('data').get('children')
-        for i in range(10):
-            print(children[i].get('data').get('title'))
-    except:
-        print('None')
+    if response.status_code == 200:
+        try:
+            results = response.json().get("data")
+            [
+                print(c.get("data").get("title"))
+                for c in results.get("children")
+            ]
+
+        except KeyError:
+            return 0
+    else:
+        return 0
